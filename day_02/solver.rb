@@ -27,7 +27,7 @@ class Round
     1 => :win,
   }
 
-  attr_reader :opponent_choice, :player_choice, :choice_score, :outcome_score, :total_score
+  attr_reader :opponent_choice, :player_choice
 
   def self.parse_input(input)
     input.split("\n").map { |line| parse(line) }
@@ -47,7 +47,7 @@ class Round
     return @outcome unless @outcome.nil?
 
     opponent_score = SHAPE_SCORE[opponent_choice]
-    player_score = SHAPE_SCORE[player_choice]
+    player_score = choice_score
 
     if opponent_choice == :scissors && player_choice == :rock
       player_score += 3
@@ -56,6 +56,18 @@ class Round
     end
 
     @outcome = OUTCOMES[player_score - opponent_score]
+  end
+
+  def choice_score
+    SHAPE_SCORE[player_choice]
+  end
+
+  def outcome_score
+    OUTCOME_SCORE[outcome]
+  end
+
+  def total_score
+    choice_score + outcome_score
   end
 end
 
