@@ -77,6 +77,16 @@ class Round
     @outcome = OUTCOMES_FROM_CHOICES[player_score - opponent_score]
   end
 
+  def player_choice
+    return @player_choice unless @player_choice.nil?
+
+    outcomes = OUTCOME_SCORE.keys
+    choice_offset = outcomes.index(outcome) - outcomes.index(:draw)
+
+    shapes = SHAPE_SCORE.keys
+    @player_choice = shapes[(shapes.index(opponent_choice) + choice_offset) % shapes.length]
+  end
+
   def choice_score
     SHAPE_SCORE[player_choice]
   end

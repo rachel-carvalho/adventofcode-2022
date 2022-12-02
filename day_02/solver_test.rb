@@ -91,7 +91,7 @@ describe Solver do
     it 'parses the third round' do
       s = Solver.new(@input)
 
-      round1 = s.rounds_from_outcomes.second
+      round1 = s.rounds_from_outcomes.third
 
       assert_equal :scissors, round1.opponent_choice
       assert_equal :win, round1.outcome
