@@ -23,6 +23,12 @@ class Round
   }
 
   OUTCOMES = {
+    X: :loss,
+    Y: :draw,
+    Z: :win,
+  }.stringify_keys
+
+  OUTCOMES_FROM_CHOICES = {
     -1 => :loss,
     0 => :draw,
     1 => :win,
@@ -30,18 +36,30 @@ class Round
 
   attr_reader :opponent_choice, :player_choice
 
-  def self.parse_input(input)
-    input.split("\n").map { |line| parse(line) }
+  def self.parse_input(input, from_choice: true)
+    input.split("\n").map do |line|
+      if from_choice
+        parse_from_choice(line)
+      else
+        parse_from_outcome(line)
+      end
+    end
   end
 
-  def self.parse(line)
+  def self.parse_from_choice(line)
     opponent, player = line.split(' ')
-    new(SHAPES[opponent], SHAPES[player])
+    new(SHAPES[opponent], SHAPES[player], nil)
   end
 
-  def initialize(opponent_choice, player_choice)
+  def self.parse_from_outcome(line)
+    opponent, outcome = line.split(' ')
+    new(SHAPES[opponent], nil, OUTCOMES[outcome])
+  end
+
+  def initialize(opponent_choice, player_choice, outcome)
     @opponent_choice = opponent_choice
     @player_choice = player_choice
+    @outcome = outcome
   end
 
   def outcome
@@ -56,7 +74,7 @@ class Round
       opponent_score += 3
     end
 
-    @outcome = OUTCOMES[player_score - opponent_score]
+    @outcome = OUTCOMES_FROM_CHOICES[player_score - opponent_score]
   end
 
   def choice_score
@@ -78,7 +96,7 @@ class Solver
   end
 
   def rounds_from_choices
-    @rounds_from_choices ||= Round.parse_input(@input)
+    @rounds_from_choices ||= Round.parse_input(@input, from_choice: true)
   end
 
   def score_from_choices
@@ -86,7 +104,7 @@ class Solver
   end
 
   def rounds_from_outcomes
-    @rounds_from_outcomes ||= Round.parse_input(@input)
+    @rounds_from_outcomes ||= Round.parse_input(@input, from_choice: false)
   end
 
   def score_from_outcomes
