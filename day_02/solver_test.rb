@@ -28,31 +28,31 @@ describe Solver do
     assert_equal 8, round1.total_score
   end
 
-  # it 'parses the second round' do
-  #   s = Solver.new(@input)
+  it 'parses the second round' do
+    s = Solver.new(@input)
 
-  #   round2 = s.rounds[1]
+    round2 = s.rounds.second
 
-  #   assert_equal :paper, round2.opponent_choice
-  #   assert_equal :rock, round2.player_choice
-  #   assert_equal :loss, round2.outcome
-  #   assert_equal 1, round2.choice_score
-  #   assert_equal 0, round2.outcome_score
-  #   assert_equal 1, round2.total_score
-  # end
+    assert_equal :paper, round2.opponent_choice
+    assert_equal :rock, round2.player_choice
+    assert_equal :loss, round2.outcome
+    assert_equal 1, round2.choice_score
+    assert_equal 0, round2.outcome_score
+    assert_equal 1, round2.total_score
+  end
 
-  # it 'parses the third round' do
-  #   s = Solver.new(@input)
+  it 'parses the third round' do
+    s = Solver.new(@input)
 
-  #   round3 = s.rounds[2]
+    round3 = s.rounds.third
 
-  #   assert_equal :scissors, round3.opponent_choice
-  #   assert_equal :scissors, round3.player_choice
-  #   assert_equal :draw, round3.outcome
-  #   assert_equal 3, round3.choice_score
-  #   assert_equal 3, round3.outcome_score
-  #   assert_equal 6, round3.total_score
-  # end
+    assert_equal :scissors, round3.opponent_choice
+    assert_equal :scissors, round3.player_choice
+    assert_equal :draw, round3.outcome
+    assert_equal 3, round3.choice_score
+    assert_equal 3, round3.outcome_score
+    assert_equal 6, round3.total_score
+  end
 
   # it 'calculates solution' do
   #   s = Solver.new(@input)

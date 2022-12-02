@@ -6,7 +6,7 @@ class Round
     X: :rock,
     B: :paper,
     Y: :paper,
-    C: :rock,
+    C: :scissors,
     Z: :scissors,
   }.stringify_keys
 
