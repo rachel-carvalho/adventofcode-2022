@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'active_support/all'
 
 class Round
   SHAPES = {
@@ -80,6 +81,6 @@ class Solver
   end
 
   def solution
-
+    rounds.map(&:total_score).sum
   end
 end

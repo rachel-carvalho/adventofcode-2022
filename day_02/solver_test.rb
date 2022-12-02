@@ -54,8 +54,8 @@ describe Solver do
     assert_equal 6, round3.total_score
   end
 
-  # it 'calculates solution' do
-  #   s = Solver.new(@input)
-  #   assert_equal 15, s.solution
-  # end
+  it 'calculates solution' do
+    s = Solver.new(@input)
+    assert_equal 15, s.solution
+  end
 end
