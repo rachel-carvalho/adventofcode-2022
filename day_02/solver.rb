@@ -73,14 +73,23 @@ class Round
 end
 
 class Solver
-  attr_reader :input, :rounds
-
   def initialize(input)
     @input = input
-    @rounds = Round.parse_input(@input)
   end
 
-  def solution
-    rounds.map(&:total_score).sum
+  def rounds_from_choices
+    @rounds_from_choices ||= Round.parse_input(@input)
+  end
+
+  def score_from_choices
+    rounds_from_choices.map(&:total_score).sum
+  end
+
+  def rounds_from_outcomes
+    @rounds_from_outcomes ||= Round.parse_input(@input)
+  end
+
+  def score_from_outcomes
+    rounds_from_outcomes.map(&:total_score).sum
   end
 end
