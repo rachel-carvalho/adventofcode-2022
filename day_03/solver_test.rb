@@ -94,4 +94,31 @@ describe Solver do
       assert_equal 157, Solver.new(@input).repeated_item_priority_sum
     end
   end
+
+  describe 'part 2 - sum of priorities of badges per 3 rucksack group' do
+    it 'parses 2 groups' do
+      s = Solver.new(@input)
+      assert_equal 2, s.groups.count
+    end
+
+    # it 'finds first groups badge' do
+    #   s = Solver.new(@input)
+    #   assert_equal 'r', s.groups.first.badge
+    # end
+    #
+    # it 'finds second groups badge' do
+    #   s = Solver.new(@input)
+    #   assert_equal 'Z', s.groups.second.badge
+    # end
+    #
+    # it 'finds group badge priorities' do
+    #   s = Solver.new(@input)
+    #   assert_equal 18, s.groups.first.badge_priority
+    #   assert_equal 52, s.groups.second.badge_priority
+    # end
+    #
+    # it 'sums all badge priorities' do
+    #   assert_equal 70, Solver.new(@input).badge_priority_sum
+    # end
+  end
 end
