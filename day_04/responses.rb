@@ -6,4 +6,4 @@ puts 'part 1:' # 540
 puts Solver.new(input).fully_overlapping_pair_count
 
 puts 'part 2:' # ?
-# puts Solver.new(input).fully_overlapping_pair_count
+# puts Solver.new(input).overlapping_pair_count

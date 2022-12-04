@@ -43,6 +43,20 @@ describe Solver do
     end
   end
 
-  describe 'part 2 - ?' do
+  describe 'part 2 - sections that have any overlap' do
+    it 'detects any overlaps of sections' do
+      s = Solver.new(@input)
+      assert_equal false, s.pairs.first.overlap?
+      assert_equal false, s.pairs.second.overlap?
+      assert_equal true, s.pairs.third.overlap?
+      assert_equal true, s.pairs.fourth.overlap?
+      assert_equal true, s.pairs.fifth.overlap?
+      assert_equal true, s.pairs[5].overlap?
+    end
+
+    it 'counts pairs that overlap in any way' do
+      s = Solver.new(@input)
+      assert_equal 4, s.overlapping_pair_count
+    end
   end
 end
