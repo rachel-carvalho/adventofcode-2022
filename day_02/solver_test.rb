@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
-require 'minitest/autorun'
-require 'minitest/pride'
-require 'pry'
-require 'active_support/all'
-
+require_relative '../test_helper'
 require_relative './solver'
 
 describe Solver do
