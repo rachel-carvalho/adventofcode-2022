@@ -1,14 +1,25 @@
 # frozen_string_literal: true
+require 'active_support/all'
 
 class Solver
-  attr_reader :rucksacks
-
   def initialize(input)
-    @rucksacks = input.split("\n").map { |line| Rucksack.new(line) }
+    @input = input
+  end
+
+  def rucksacks
+    @rucksacks ||= @input.split("\n").map { |line| Rucksack.new(line) }
+  end
+
+  def groups
+    @groups ||= rucksacks.each_slice(3).to_a.map { |items| Group.new(items) }
   end
 
   def repeated_item_priority_sum
     rucksacks.sum(&:repeated_item_priority)
+  end
+
+  def badge_priority_sum
+    groups.sum(&:badge_priority)
   end
 end
 
@@ -28,5 +39,19 @@ class Rucksack
 
   def repeated_item_priority
     PRIORITIES.index(repeated_item)
+  end
+end
+
+class Group
+  def initialize(rucksacks)
+    @rucksack_contents = rucksacks.map(&:all_items)
+  end
+
+  def badge
+    @badge ||= (@rucksack_contents.first & @rucksack_contents.second & @rucksack_contents.third).first
+  end
+
+  def badge_priority
+    Rucksack::PRIORITIES.index(badge)
   end
 end
