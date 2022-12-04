@@ -12,6 +12,10 @@ class Solver
   def fully_overlapping_pair_count
     pairs.count(&:fully_overlap?)
   end
+
+  def overlapping_pair_count
+    pairs.count(&:overlap?)
+  end
 end
 
 class Pair
@@ -26,5 +30,11 @@ class Pair
 
   def fully_overlap?
     first_section_range.cover?(second_section_range) || second_section_range.cover?(first_section_range)
+  end
+
+  def overlap?
+    return @overlap unless @overlap.nil?
+
+    @overlap = (first_section_range.to_a & second_section_range.to_a).any?
   end
 end
