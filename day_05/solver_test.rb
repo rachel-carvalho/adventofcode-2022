@@ -44,15 +44,16 @@ describe Solver do
 
     it 'executes movements' do
       s = Solver.new(@input)
-      updated_stacks = s.execute_moves
-      assert_equal ['C'], updated_stacks.first
-      assert_equal ['M'], updated_stacks.second
-      assert_equal ['P', 'D', 'N', 'Z'], updated_stacks.third
+      s.move_crates!
+      assert_equal ['C'], s.stacks.first
+      assert_equal ['M'], s.stacks.second
+      assert_equal ['P', 'D', 'N', 'Z'], s.stacks.third
     end
 
     it 'finds top crate for each stack' do
       s = Solver.new(@input)
-      assert_equal 'CMZ', s.move_and_find_top_crates
+      s.move_crates!
+      assert_equal 'CMZ', s.top_crates
     end
   end
 end
