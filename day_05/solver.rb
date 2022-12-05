@@ -14,9 +14,19 @@ class Solver
     @single_crate_movements ||= Movement.parse_single_crate(@movement_input)
   end
 
+  def multi_crate_movements
+    @multi_crate_movements ||= Movement.parse_multi_crate(@movement_input)
+  end
+
   def move_crates_one_at_a_time!
     single_crate_movements.each do |origin, destination|
       stacks[destination].push stacks[origin].pop
+    end
+  end
+
+  def move_crates_many_at_a_time!
+    multi_crate_movements.each do |count, origin, destination|
+      stacks[destination].push *stacks[origin].pop(count)
     end
   end
 
@@ -43,5 +53,12 @@ class Movement
       count, origin, dest = line.scan(/\d+/)
       count.to_i.times.map { |_| [origin.to_i - 1, dest.to_i - 1] }
     end.flatten(1)
+  end
+
+  def self.parse_multi_crate(input)
+    input.split("\n").map do |line|
+      count, origin, dest = line.scan(/\d+/)
+      [count.to_i, origin.to_i - 1, dest.to_i - 1]
+    end
   end
 end
