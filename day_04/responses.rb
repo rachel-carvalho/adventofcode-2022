@@ -5,5 +5,5 @@ input = File.read(File.expand_path('./input.txt', __dir__))
 puts 'part 1:' # 540
 puts Solver.new(input).fully_overlapping_pair_count
 
-puts 'part 2:' # ?
+puts 'part 2:' # 872
 puts Solver.new(input).overlapping_pair_count
