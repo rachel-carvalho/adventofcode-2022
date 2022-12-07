@@ -49,31 +49,31 @@ describe Solver do
   describe 'part 2 - find start of message marker' do
     it 'finds the marker on first input' do
       s = Solver.new(@inputs.first)
-      assert_equal 'pqmgbljsphdztn', s.start_of_message_marker
+      assert_equal 'qmgbljsphdztnv', s.start_of_message_marker
       assert_equal 19, s.start_of_message_index
     end
 
     it 'finds the marker on second input' do
       s = Solver.new(@inputs.second)
-      assert_equal 'gvbhsrlpgdmjqw', s.start_of_message_marker
+      assert_equal 'vbhsrlpgdmjqwf', s.start_of_message_marker
       assert_equal 23, s.start_of_message_index
     end
 
     it 'finds the marker on third input' do
       s = Solver.new(@inputs.third)
-      assert_equal 'qldpwncqszvftb', s.start_of_message_marker
+      assert_equal 'ldpwncqszvftbr', s.start_of_message_marker
       assert_equal 23, s.start_of_message_index
     end
 
     it 'finds the marker on fourth input' do
       s = Solver.new(@inputs.fourth)
-      assert_equal 'fwmzdfjlvtqnbh', s.start_of_message_marker
+      assert_equal 'wmzdfjlvtqnbhc', s.start_of_message_marker
       assert_equal 29, s.start_of_message_index
     end
 
     it 'finds the marker on fifth input' do
       s = Solver.new(@inputs.fifth)
-      assert_equal 'ljwzlrfnpqdbht', s.start_of_message_marker
+      assert_equal 'jwzlrfnpqdbhtm', s.start_of_message_marker
       assert_equal 26, s.start_of_message_index
     end
   end
