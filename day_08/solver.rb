@@ -15,7 +15,7 @@ class Solver
   end
 
   def highest_scenic_score
-
+    forest.trees.map(&:scenic_score).max
   end
 end
 
@@ -77,35 +77,47 @@ class Tree
 
   def all_tall_neighbors?
     [
-      find_tall_neighbor_north,
-      find_tall_neighbor_south,
-      find_tall_neighbor_west,
-      find_tall_neighbor_east,
+      find_tall_neighbor(x, y, step_y: -1),
+      find_tall_neighbor(x, y, step_x: -1),
+      find_tall_neighbor(x, y, step_y: 1),
+      find_tall_neighbor(x, y, step_x: 1),
     ].all?
   end
 
-  def find_tall_neighbor_north(x = self.x, y = self.y)
-    find_tall_neighbor(x, y, step_y: -1)
+  def viewing_distances
+    [
+      count_trees_until_tall_neighbor(x, y, step_y: -1),
+      count_trees_until_tall_neighbor(x, y, step_x: -1),
+      count_trees_until_tall_neighbor(x, y, step_y: 1),
+      count_trees_until_tall_neighbor(x, y, step_x: 1),
+    ]
   end
 
-  def find_tall_neighbor_south(x = self.x, y = self.y)
-    find_tall_neighbor(x, y, step_y: 1)
+  def scenic_score
+    viewing_distances.inject(:*)
   end
 
-  def find_tall_neighbor_west(x = self.x, y = self.y)
-    find_tall_neighbor(x, y, step_x: -1)
+  private
+
+  def count_trees_until_tall_neighbor(x, y, step_x: 0, step_y: 0)
+    Counter.new(1).tap do |counter|
+      find_tall_neighbor(x, y, step_x: step_x, step_y: step_y, counter: counter)
+    end.value
   end
 
-  def find_tall_neighbor_east(x = self.x, y = self.y)
-    find_tall_neighbor(x, y, step_x: 1)
-  end
-
-  def find_tall_neighbor(x, y, step_x: 0, step_y: 0)
-    return if y.in?([0, forest.rows - 1]) || x.in?([0, forest.columns - 1])
+  def find_tall_neighbor(x, y, step_x: 0, step_y: 0, counter: nil)
+    # puts counter.value if !counter.nil? && step_x == 1
+    # binding.pry if !counter.nil? && step_x == 1
+    if y.in?([0, forest.rows - 1]) || x.in?([0, forest.columns - 1])
+      counter.value -= 1 if counter
+      return
+    end
 
     neighbor = forest[x + step_x, y + step_y]
     return neighbor if neighbor.taller?(self)
 
-    find_tall_neighbor(neighbor.x, neighbor.y, step_x: step_x, step_y: step_y)
+    find_tall_neighbor(neighbor.x, neighbor.y, step_x: step_x, step_y: step_y, counter: counter.tap {|c| c && c.value += 1})
   end
+
+  Counter = Struct.new('Counter', :value)
 end

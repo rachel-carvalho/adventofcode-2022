@@ -46,6 +46,20 @@ describe Solver do
   end
 
   describe 'part 2 - highest scenic score' do
+    it 'finds viewing distances and score for tree on 2,1' do
+      s = Solver.new(@input)
+      tree = s.forest[2, 1]
+      assert_equal [1, 1, 2, 2], tree.viewing_distances
+      assert_equal 4, tree.scenic_score
+    end
+
+    it 'finds viewing distances and score for tree on 2,3' do
+      s = Solver.new(@input)
+      tree = s.forest[2, 3]
+      assert_equal [2, 2, 1, 2], tree.viewing_distances
+      assert_equal 8, tree.scenic_score
+    end
+
     it 'finds the highest scenic score' do
       s = Solver.new(@input)
       assert_equal 8, s.highest_scenic_score
