@@ -2,6 +2,8 @@
 require 'active_support/all'
 
 class Solver
+  REQUIRED_SPACE = 30_000_000
+
   def initialize(input)
     @input = input
   end
@@ -16,6 +18,16 @@ class Solver
 
   def small_directories
     @small_directories ||= root_dir.flat_directories.filter { |d| d.size < 100000 }
+  end
+
+  def need_to_free
+    REQUIRED_SPACE - root_dir.current_free_space
+  end
+
+  def directory_to_delete
+    root_dir.flat_directories.filter do |dir|
+      dir.size >= need_to_free
+    end.sort_by(&:size).first
   end
 end
 
@@ -110,6 +122,8 @@ module Elf
   class Directory < Hash
     attr_accessor :name, :children
 
+    DISK_SIZE = 70_000_000
+
     def self.init(name:, children: [])
       new.tap do |d|
         d.name = name
@@ -133,6 +147,10 @@ module Elf
 
     def flat_directories
       ([self] + values.map(&:flat_directories)).flatten
+    end
+
+    def current_free_space
+      DISK_SIZE - size
     end
   end
 
