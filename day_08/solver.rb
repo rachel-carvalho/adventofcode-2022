@@ -13,6 +13,10 @@ class Solver
   def visible_tree_count
     forest.visible_trees.count
   end
+
+  def highest_scenic_score
+
+  end
 end
 
 class Forest

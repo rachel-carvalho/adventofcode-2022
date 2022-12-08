@@ -6,5 +6,5 @@ puts 'part 1:' # 1825
 puts Solver.new(input).visible_tree_count
 
 puts 'part 2:' # ?
-# puts Solver.new(input).visible_tree_count
+puts Solver.new(input).highest_scenic_score
 

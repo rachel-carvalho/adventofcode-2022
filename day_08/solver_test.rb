@@ -45,6 +45,10 @@ describe Solver do
     end
   end
 
-  describe 'part 2 - ?' do
+  describe 'part 2 - highest scenic score' do
+    it 'finds the highest scenic score' do
+      s = Solver.new(@input)
+      assert_equal 8, s.highest_scenic_score
+    end
   end
 end
