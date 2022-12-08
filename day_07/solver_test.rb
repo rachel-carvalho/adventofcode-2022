@@ -144,6 +144,16 @@ $ ls
         assert_equal 1, dir.children.count
         assert_equal 584, dir.size
       end
+
+      it 'flattens directories' do
+        s = Solver.new(@input)
+        assert_equal ['/', 'a', 'e', 'd'], s.root_dir.flat_directories.map(&:name)
+      end
+
+      it 'filters directories with less than 100k in size' do
+        s = Solver.new(@input)
+        assert_equal ['a', 'e'], s.small_directories.map(&:name)
+      end
     end
   end
 

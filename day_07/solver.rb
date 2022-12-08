@@ -11,7 +11,11 @@ class Solver
   end
 
   def root_dir
-    @root_dir ||= Elf::FileSystem.new(commands).tap(&:parse_directories).tree.values.first
+    @root_dir ||= Elf::FileSystem.new(commands).tap(&:parse_directories).root_dir
+  end
+
+  def small_directories
+    @small_directories ||= root_dir.flat_directories.filter { |d| d.size < 100000 }
   end
 end
 
@@ -97,6 +101,10 @@ module Elf
         d = d[k]
       end
     end
+
+    def root_dir
+      tree.values.first
+    end
   end
 
   class Directory < Hash
@@ -121,6 +129,10 @@ module Elf
 
     def size
       @size ||= children.sum(&:size)
+    end
+
+    def flat_directories
+      ([self] + values.map(&:flat_directories)).flatten
     end
   end
 
