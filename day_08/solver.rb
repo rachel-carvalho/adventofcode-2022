@@ -24,65 +24,88 @@ class Forest
     new(lines.map { |line| line.chars.map(&:to_i) })
   end
 
-  attr_reader :tree_heights
+  def initialize(map)
+    @map = map
+  end
 
-  def initialize(tree_heights)
-    @tree_heights = tree_heights
+  def tree_heights
+    @tree_heights ||= trees.map(&:height).each_slice(@map.first.length).to_a
+  end
+
+  def trees
+    trees_by_coordinates.flatten
+  end
+
+  def trees_by_coordinates
+    @trees_by_coordinates ||= @map.each_with_index.map do |line, y|
+      line.each_with_index.map do |height, x|
+        Tree.new(x, y, height, self)
+      end
+    end
+  end
+
+  def [](x, y)
+    trees_by_coordinates[y][x]
+  end
+
+  def rows
+    trees_by_coordinates.count
+  end
+
+  def columns
+    trees_by_coordinates.first.count
   end
 
   def visible_trees
-    return @visible_trees if @visible_trees
+    @visible_trees ||= trees.reject(&:all_tall_neighbors?).map { |t| [t.x, t.y] }
+  end
+end
 
-    @visible_trees = []
-    tree_heights.each_with_index do |line, y|
-      line.each_with_index do |height, x|
-        @visible_trees << [x, y] unless all_tall_neighbors?(x, y, height)
-      end
-    end
+class Tree
+  attr_reader :x, :y, :height, :forest
 
-    @visible_trees
+  def initialize(x, y, height, forest)
+    @x = x
+    @y = y
+    @height = height
+    @forest = forest
   end
 
-  private
+  def taller?(other)
+    height >= other.height
+  end
 
-  def all_tall_neighbors?(x, y, height)
+  def all_tall_neighbors?
     [
-      find_tall_neighbor_north(x, y, height),
-      find_tall_neighbor_south(x, y, height),
-      find_tall_neighbor_west(x, y, height),
-      find_tall_neighbor_east(x, y, height),
+      find_tall_neighbor_north,
+      find_tall_neighbor_south,
+      find_tall_neighbor_west,
+      find_tall_neighbor_east,
     ].all?
   end
 
-  def find_tall_neighbor_north(x, y, height)
-    return if y.zero?
-    neighbor_y = y - 1
-    return [x, neighbor_y] if tree_heights[neighbor_y][x] >= height
-
-    find_tall_neighbor_north(x, neighbor_y, height)
+  def find_tall_neighbor_north(x = self.x, y = self.y)
+    find_tall_neighbor(x, y, step_y: -1)
   end
 
-  def find_tall_neighbor_south(x, y, height)
-    return if y == tree_heights.count - 1
-    neighbor_y = y + 1
-    return [x, neighbor_y] if tree_heights[neighbor_y][x] >= height
-
-    find_tall_neighbor_south(x, neighbor_y, height)
+  def find_tall_neighbor_south(x = self.x, y = self.y)
+    find_tall_neighbor(x, y, step_y: 1)
   end
 
-  def find_tall_neighbor_west(x, y, height)
-    return if x.zero?
-    neighbor_x = x - 1
-    return [neighbor_x, y] if tree_heights[y][neighbor_x] >= height
-
-    find_tall_neighbor_west(neighbor_x, y, height)
+  def find_tall_neighbor_west(x = self.x, y = self.y)
+    find_tall_neighbor(x, y, step_x: -1)
   end
 
-  def find_tall_neighbor_east(x, y, height)
-    return if x == tree_heights.first.count - 1
-    neighbor_x = x + 1
-    return [neighbor_x, y] if tree_heights[y][neighbor_x] >= height
+  def find_tall_neighbor_east(x = self.x, y = self.y)
+    find_tall_neighbor(x, y, step_x: 1)
+  end
 
-    find_tall_neighbor_east(neighbor_x, y, height)
+  def find_tall_neighbor(x, y, step_x: 0, step_y: 0)
+    return if y.in?([0, forest.rows - 1]) || x.in?([0, forest.columns - 1])
+
+    neighbor = forest[x + step_x, y + step_y]
+    return neighbor if neighbor.taller?(self)
+
+    find_tall_neighbor(neighbor.x, neighbor.y, step_x: step_x, step_y: step_y)
   end
 end
