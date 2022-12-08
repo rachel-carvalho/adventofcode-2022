@@ -37,7 +37,7 @@ $ ls
         command = s.commands.first
         assert_equal 'cd', command.executable
         assert_equal ['/'], command.arguments
-        assert_equal nil, command.output
+        assert_nil command.output
       end
 
       it 'parses second command and output' do
@@ -53,7 +53,7 @@ $ ls
         command = s.commands.third
         assert_equal 'cd', command.executable
         assert_equal ['a'], command.arguments
-        assert_equal nil, command.output
+        assert_nil command.output
       end
 
       it 'parses fourth command and output' do
@@ -69,7 +69,7 @@ $ ls
         command = s.commands.fifth
         assert_equal 'cd', command.executable
         assert_equal ['e'], command.arguments
-        assert_equal nil, command.output
+        assert_nil command.output
       end
 
       it 'parses sixth command and output' do
@@ -85,7 +85,7 @@ $ ls
         command = s.commands[6]
         assert_equal 'cd', command.executable
         assert_equal ['..'], command.arguments
-        assert_equal nil, command.output
+        assert_nil command.output
       end
 
       it 'parses eighth command and output' do
@@ -93,7 +93,7 @@ $ ls
         command = s.commands[7]
         assert_equal 'cd', command.executable
         assert_equal ['..'], command.arguments
-        assert_equal nil, command.output
+        assert_nil command.output
       end
 
       it 'parses nineth command and output' do
@@ -101,7 +101,7 @@ $ ls
         command = s.commands[8]
         assert_equal 'cd', command.executable
         assert_equal ['d'], command.arguments
-        assert_equal nil, command.output
+        assert_nil command.output
       end
 
       it 'parses tenth command and output' do
