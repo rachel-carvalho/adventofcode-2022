@@ -24,7 +24,7 @@ describe Solver do
         [3,3,5,4,9],
         [3,5,3,9,0],
       ]
-      assert_equal array_of_ints, s.forest
+      assert_equal array_of_ints, s.forest.tree_heights
     end
 
     it 'finds visible trees' do
