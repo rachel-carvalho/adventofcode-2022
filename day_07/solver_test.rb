@@ -157,6 +157,21 @@ $ ls
     end
   end
 
-  describe 'part 2 - ?' do
+  describe 'part 2 - find smallest size directory that will free up 30m' do
+    it 'calculates current free space' do
+      s = Solver.new(@input)
+      assert_equal 21618835, s.root_dir.current_free_space
+    end
+
+    it 'calculates space that needs to be freed' do
+      s = Solver.new(@input)
+      assert_equal 8381165, s.need_to_free
+    end
+
+    it 'finds which directory to delete that will free the space needed' do
+      s = Solver.new(@input)
+      assert_equal 'd', s.directory_to_delete.name
+      assert_equal 24933642, s.directory_to_delete.size
+    end
   end
 end
