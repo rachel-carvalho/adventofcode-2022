@@ -25,13 +25,13 @@ class Solver
   end
 
   def long_rope_tail_positions
-    # return @long_rope_tail_positions if @long_rope_tail_positions
-    # long_rope.move!(*movements)
-    # @long_rope_tail_positions = long_rope.tail_position_history
+    return @long_rope_tail_positions if @long_rope_tail_positions
+    long_rope.move!(*movements)
+    @long_rope_tail_positions = long_rope.tail_position_history
   end
 
   def long_rope_unique_tail_position_count
-    0
+    long_rope_tail_positions.uniq.count
   end
 end
 

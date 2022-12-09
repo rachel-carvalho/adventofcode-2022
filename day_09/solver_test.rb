@@ -128,7 +128,22 @@ U 20
       s.long_rope.move!(s.movements.first)
       assert_equal [5,0], s.long_rope.head_position
       assert_equal [0,0], s.long_rope.tail_position
-      assert_equal [[0,0]] * 5, s.long_rope.tail_position_history
+      assert_equal [[0,0]] * 6, s.long_rope.tail_position_history
+    end
+
+    it 'can move long rope with second input, second movement' do
+      s = Solver.new(@input2)
+      s.long_rope.move!(*s.movements[0..1])
+      assert_equal [5,-8], s.long_rope.head_position
+      assert_equal [0,0], s.long_rope.tail_position
+      assert_equal [[0,0]] * (5 + 9), s.long_rope.tail_position_history
+    end
+
+    it 'can move long rope with second input, third movement' do
+      s = Solver.new(@input2)
+      s.long_rope.move!(*s.movements[0..2])
+      assert_equal [-3,-8], s.long_rope.head_position
+      assert_equal [1,-3], s.long_rope.tail_position
     end
 
     it 'counts unique tail positions for first input' do
