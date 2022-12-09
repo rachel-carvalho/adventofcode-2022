@@ -2,11 +2,12 @@
 require 'active_support/all'
 
 class Solver
-  attr_accessor :rope
+  attr_accessor :short_rope, :long_rope
 
   def initialize(input)
     @input = input
-    @rope = Rope.new
+    @short_rope = Rope.new
+    @long_rope = Rope.new(knot_count: 10)
   end
 
   def movements
@@ -15,12 +16,22 @@ class Solver
 
   def tail_positions
     return @tail_positions if @tail_positions
-    rope.move!(*movements)
-    @tail_positions = rope.tail_position_history
+    short_rope.move!(*movements)
+    @tail_positions = short_rope.tail_position_history
   end
 
   def unique_tail_position_count
     tail_positions.uniq.count
+  end
+
+  def long_rope_tail_positions
+    # return @long_rope_tail_positions if @long_rope_tail_positions
+    # long_rope.move!(*movements)
+    # @long_rope_tail_positions = long_rope.tail_position_history
+  end
+
+  def long_rope_unique_tail_position_count
+    0
   end
 end
 
@@ -61,7 +72,7 @@ end
 class Rope
   attr_reader :head_position, :tail_position, :tail_position_history
 
-  def initialize(head_position = [0,0], tail_position = [0,0])
+  def initialize(knot_count: 2)
     @head_position = head_position
     @tail_position = tail_position
     @tail_position_history = [tail_position.dup]
