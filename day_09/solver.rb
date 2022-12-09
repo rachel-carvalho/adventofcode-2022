@@ -70,12 +70,19 @@ class Movement
 end
 
 class Rope
-  attr_reader :head_position, :tail_position, :tail_position_history
+  attr_reader :tail_position_history, :knot_positions
 
   def initialize(knot_count: 2)
-    @head_position = head_position
-    @tail_position = tail_position
+    @knot_positions = knot_count.times.map {|_| [0,0]}
     @tail_position_history = [tail_position.dup]
+  end
+
+  def head_position
+    knot_positions.first
+  end
+
+  def tail_position
+    knot_positions.last
   end
 
   def move!(*movements)
@@ -86,35 +93,37 @@ class Rope
         else
           head_position[0] += movement.direction_increment
         end
-        move_tail
+        knot_positions.each_with_index do |knot, index|
+          next if index.zero?
+          drag_knot(knot, knot_positions[index - 1])
+        end
+        tail_position_history << tail_position.dup
       end
     end
   end
 
-  def move_tail
-    difference_x = head_position[0] - tail_position[0]
-    difference_y = head_position[1] - tail_position[1]
+  def drag_knot(knot, reference_knot)
+    difference_x = reference_knot[0] - knot[0]
+    difference_y = reference_knot[1] - knot[1]
 
     differences = [difference_x, difference_y].map(&:abs)
     if differences.none?(&:zero?)
-      # diagonal head
+      # diagonal reference
       if differences.any? {|d| d == 2 }
         # move diagonally
-        tail_direction_x = difference_x.negative? ? -1 : difference_x.positive? ? 1 : 0
-        tail_position[0] += tail_direction_x
-        tail_direction_y = difference_y.negative? ? -1 : difference_y.positive? ? 1 : 0
-        tail_position[1] += tail_direction_y
+        direction_x = difference_x.negative? ? -1 : difference_x.positive? ? 1 : 0
+        knot[0] += direction_x
+        direction_y = difference_y.negative? ? -1 : difference_y.positive? ? 1 : 0
+        knot[1] += direction_y
       end
     elsif difference_x.abs == 2
       # horizontal
-      tail_direction = difference_x.negative? ? -1 : difference_x.positive? ? 1 : 0
-      tail_position[0] += tail_direction
+      direction = difference_x.negative? ? -1 : difference_x.positive? ? 1 : 0
+      knot[0] += direction
     elsif difference_y.abs == 2
       # vertical
-      tail_direction = difference_y.negative? ? -1 : difference_y.positive? ? 1 : 0
-      tail_position[1] += tail_direction
+      direction = difference_y.negative? ? -1 : difference_y.positive? ? 1 : 0
+      knot[1] += direction
     end
-
-    tail_position_history << tail_position.dup
   end
 end
