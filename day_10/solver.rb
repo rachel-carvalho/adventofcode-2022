@@ -16,10 +16,30 @@ class Solver
   def signal_strengths
     return @signal_strengths if @signal_strengths
     cpu.execute(*instructions)
-    (((cpu.current_cycle - 20) / 40).ceil + 1).times.map do |index|
+    @signal_strengths = (((cpu.current_cycle - 20) / 40).ceil + 1).times.map do |index|
       cycle_number = 20 + (index * 40)
       cpu.register_value_at_cycle(cycle_number) * cycle_number
     end
+  end
+
+  def screen
+    return @screen if @screen
+
+    cpu.execute(*instructions)
+
+    screen_width = 40
+    screen_height = 6
+
+    cpu.register_history.each_with_index.map do |x, cycle|
+      screen_position = cycle % 40
+      if screen_position.in?([x - 1, x, x + 1])
+        '#'
+      else
+        '.'
+      end
+    end.each_slice(screen_width).to_a[0...screen_height].map do |slice|
+      slice.join('')
+    end.join("\n")
   end
 end
 

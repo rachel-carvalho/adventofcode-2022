@@ -218,6 +218,18 @@ noop
     end
   end
 
-  describe 'part 2 - ?' do
+  describe 'part 2 - draw screen' do
+    it 'draws screen based on register value' do
+      s = Solver.new(@input2)
+      expected_screen = '''
+##..##..##..##..##..##..##..##..##..##..
+###...###...###...###...###...###...###.
+####....####....####....####....####....
+#####.....#####.....#####.....#####.....
+######......######......######......####
+#######.......#######.......#######.....
+'''
+      assert_equal expected_screen, "\n#{s.screen}\n"
+    end
   end
 end
