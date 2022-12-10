@@ -166,7 +166,7 @@ noop
         s = Solver.new(@input)
         assert_equal :noop, s.instructions.first.type
         assert_equal 1, s.instructions.first.cycles
-        assert_nil s.instructions.first.argument
+        assert_equal 0, s.instructions.first.argument
       end
 
       it 'parses second instruction' do
@@ -178,31 +178,31 @@ noop
     end
 
     describe 'cpu' do
-      it 'initializes register with 1, cycle with 0' do
+      it 'initializes register and cycle with 1' do
         s = Solver.new(@input)
         assert_equal 1, s.cpu.register
-        assert_equal 1, s.cpu.cycle
+        assert_equal 1, s.cpu.current_cycle
       end
 
       it 'executes first instruction' do
         s = Solver.new(@input)
         s.cpu.execute(s.instructions.first)
         assert_equal 1, s.cpu.register
-        assert_equal 2, s.cpu.cycle
+        assert_equal 2, s.cpu.current_cycle
       end
 
       it 'executes second instruction' do
         s = Solver.new(@input)
         s.cpu.execute(*s.instructions[0..1])
         assert_equal 4, s.cpu.register
-        assert_equal 4, s.cpu.cycle
+        assert_equal 4, s.cpu.current_cycle
       end
 
       it 'executes third instruction' do
         s = Solver.new(@input)
         s.cpu.execute(*s.instructions)
-        assert_equal -1, s.cpu.register
-        assert_equal 6, s.cpu.cycle
+        assert_equal (-1), s.cpu.register
+        assert_equal 6, s.cpu.current_cycle
       end
 
       it 'finds register value at specific cycle' do
