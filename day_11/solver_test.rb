@@ -41,6 +41,7 @@ Monkey 3:
       it 'parses 4 monkeys' do
         s = Solver.new(@input)
         assert_equal 4, s.monkeys.count
+        assert_equal 4, Monkey.all_monkeys.count
       end
 
       it 'parses first monkey' do
@@ -50,7 +51,6 @@ Monkey 3:
         assert_equal ['*', 19], monkey.operation
         assert_equal 23, monkey.divisible_by
         assert_equal [2, 3], monkey.destination_monkeys
-        assert_equal 4, monkey.all_monkeys.count
       end
 
       it 'parses third monkey' do
@@ -60,14 +60,13 @@ Monkey 3:
         assert_equal ['*'], monkey.operation
         assert_equal 13, monkey.divisible_by
         assert_equal [1, 3], monkey.destination_monkeys
-        assert_equal 4, monkey.all_monkeys.count
       end
     end
 
-    it 'calculates monkey business after 20 rounds' do
-      s = Solver.new(@input)
-      assert_equal 10605, s.monkey_business(rounds: 20)
-    end
+    # it 'calculates monkey business after 20 rounds' do
+    #   s = Solver.new(@input)
+    #   assert_equal 10605, s.monkey_business(rounds: 20)
+    # end
   end
 
   describe 'part 2 - ?' do
