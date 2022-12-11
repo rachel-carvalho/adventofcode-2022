@@ -41,7 +41,7 @@ Monkey 3:
       it 'parses 4 monkeys' do
         s = Solver.new(@input)
         assert_equal 4, s.monkeys.count
-        assert_equal 4, Monkey.all_monkeys.count
+        assert_equal 4, Monkey.all.count
       end
 
       it 'parses first monkey' do
@@ -61,12 +61,53 @@ Monkey 3:
         assert_equal 13, monkey.divisible_by
         assert_equal [1, 3], monkey.destination_monkeys
       end
+
+      it 'first monkey throws' do
+        s = Solver.new(@input)
+        monkey0 = s.monkeys[0]
+        monkey3 = s.monkeys[3]
+        monkey0.throw!
+        assert_equal [], monkey0.items
+        assert_equal [74, 500, 620], monkey3.items
+        assert_equal 2, monkey0.inspected_item_count
+      end
     end
 
-    # it 'calculates monkey business after 20 rounds' do
-    #   s = Solver.new(@input)
-    #   assert_equal 10605, s.monkey_business(rounds: 20)
-    # end
+    it 'plays 1 round' do
+      s = Solver.new(@input)
+      s.play!
+      assert_equal [20, 23, 27, 26], s.monkeys.first.items
+      assert_equal [2080, 25, 167, 207, 401, 1046], s.monkeys.second.items
+      assert_equal [], s.monkeys.third.items
+      assert_equal [], s.monkeys.fourth.items
+    end
+
+    it 'plays 3 rounds' do
+      s = Solver.new(@input)
+      s.play!(rounds: 3)
+      assert_equal [16, 18, 21, 20, 122], s.monkeys.first.items
+      assert_equal [1468, 22, 150, 286, 739], s.monkeys.second.items
+      assert_equal [], s.monkeys.third.items
+      assert_equal [], s.monkeys.fourth.items
+    end
+
+    it 'plays 20 rounds' do
+      s = Solver.new(@input)
+      s.play!(rounds: 20)
+      assert_equal [10, 12, 14, 26, 34], s.monkeys.first.items
+      assert_equal 101, s.monkeys.first.inspected_item_count
+      assert_equal [245, 93, 53, 199, 115], s.monkeys.second.items
+      assert_equal 95, s.monkeys.second.inspected_item_count
+      assert_equal [], s.monkeys.third.items
+      assert_equal 7, s.monkeys.third.inspected_item_count
+      assert_equal [], s.monkeys.fourth.items
+      assert_equal 105, s.monkeys.fourth.inspected_item_count
+    end
+
+    it 'calculates monkey business after 20 rounds' do
+      s = Solver.new(@input)
+      assert_equal 10605, s.monkey_business(rounds: 20)
+    end
   end
 
   describe 'part 2 - ?' do

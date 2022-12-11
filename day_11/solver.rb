@@ -9,6 +9,16 @@ class Solver
   def monkeys
     @monkeys ||= Monkey.parse(@input.split("\n\n"))
   end
+
+  def play!(rounds: 1)
+    rounds.times { monkeys.each(&:throw!) }
+  end
+
+  def monkey_business(rounds:)
+    play!(rounds: rounds)
+    first, second = monkeys.sort_by(&:inspected_item_count).reverse[0..1]
+    first.inspected_item_count * second.inspected_item_count
+  end
 end
 
 class Monkey
@@ -23,12 +33,12 @@ class Monkey
 
       new(items, parse_operation(operation), divisible, destination)
     end.tap do |all_monkeys|
-      @all_monkeys = all_monkeys
+      @all = all_monkeys
     end
   end
 
-  def self.all_monkeys
-    @all_monkeys
+  def self.all
+    @all
   end
 
   def self.parse_operation(operation)
@@ -37,12 +47,23 @@ class Monkey
     [operator, value].compact
   end
 
-  attr_reader :items, :operation, :divisible_by, :destination_monkeys
+  attr_reader :items, :operation, :divisible_by, :destination_monkeys, :inspected_item_count
 
   def initialize(items, operation, divisible_by, destination)
     @items = items
     @operation = operation
     @divisible_by = divisible_by
     @destination_monkeys = destination
+    @inspected_item_count = 0
+  end
+
+  def throw!
+    items.each do |item|
+      worry = item.public_send(operation.first, operation.second || item) / 3
+      destination = (worry % divisible_by).zero? ? destination_monkeys.first : destination_monkeys.second
+      Monkey.all[destination].items << worry
+      @inspected_item_count += 1
+    end
+    @items = []
   end
 end
