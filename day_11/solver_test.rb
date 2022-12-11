@@ -110,6 +110,28 @@ Monkey 3:
     end
   end
 
-  describe 'part 2 - ?' do
+  describe 'part 2 - no relief, 10 000 rounds' do
+    it 'plays 1 round with no relief' do
+      s = Solver.new(@input)
+      s.play!(relief: 1)
+      assert_equal [2, 4, 3, 6], s.monkeys.map(&:inspected_item_count)
+    end
+
+    it 'plays 20 rounds with no relief' do
+      s = Solver.new(@input)
+      s.play!(rounds: 20, relief: 1)
+      assert_equal [99, 97, 8, 103], s.monkeys.map(&:inspected_item_count)
+    end
+
+    it 'plays 10 000 rounds with no relief' do
+      s = Solver.new(@input)
+      s.play!(rounds: 10_000, relief: 1)
+      assert_equal [52166, 47830, 1938, 52013], s.monkeys.map(&:inspected_item_count)
+    end
+
+    it 'calculates monkey business after 10 000 rounds with no relief' do
+      s = Solver.new(@input)
+      assert_equal 2_713_310_158, s.monkey_business(rounds: 20, relief: 1)
+    end
   end
 end
